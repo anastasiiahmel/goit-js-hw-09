@@ -1,7 +1,8 @@
-const form = document.querySelector('.form');
-const btn = document.querySelector('button');
+import Notiflix from 'notiflix';
 
-btn.addEventListener('click', onMeNap);
+const form = document.querySelector('.form');
+
+form.addEventListener('submit', currentPromise);
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
@@ -16,9 +17,10 @@ function createPromise(position, delay) {
   });
 }
 
-function onMeNap(evt) {
+function currentPromise(evt) {
   evt.preventDefault();
   const { delay, step, amount } = evt.currentTarget.elements;
+
   let valueDelay = Number(delay.value);
   let valueStep = Number(step.value);
   let valueAmount = Number(amount.value);
@@ -26,12 +28,16 @@ function onMeNap(evt) {
   for (let i = 1; i <= valueAmount; i += 1) {
     createPromise(i, valueDelay)
       .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notiflix.Notify.success(
+          `✅ Fulfilled promise ${position} in ${delay}ms`
+        );
       })
       .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notiflix.Notify.failure(
+          `❌ Rejected promise ${position} in ${delay}ms`
+        );
       });
-    // evt.currentTarget.reset();
     valueDelay += valueStep;
+    evt.currentTarget.reset();
   }
 }

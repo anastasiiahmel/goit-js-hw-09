@@ -20,3 +20,7 @@ img {
   display: flex;
   gap: 20px;
 }
+
+.form {
+  display: flex;
+}
